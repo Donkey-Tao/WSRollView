@@ -62,12 +62,9 @@ typedef enum {
 
 -(void)addRollImageAndTimer{
     
-    NSLog(@"%f***%f",_rollImage.size.width,_rollImage.size.height);
-    NSLog(@"%f***%f",self.frame.size.width,self.frame.size.height);
-    
     //图片
-    if (_rollImage !=nil && _rollImage.size.width/_rollImage.size.height<self.frame.size.width/self.frame.size.height) {
-        //本地图片的宽高比(100*568)<视图的宽高比(320*568)，进行上下滚动
+    if (_rollImage !=nil && _rollImage.size.width/_rollImage.size.height<self.frame.size.width/self.frame.size.height && ABS((self.frame.size.width/_rollImage.size.width)*_rollImage.size.height) - self.frame.size.height > self.frame.size.height/4 ) {
+        //本地图片的宽高比(100*568)<视图的宽高比(320*568) 并且缩放后高度还大于WSRollView高的1/4时，进行上下滚动
         
         _rollImageView.frame = CGRectMake(0, 0,self.frame.size.width, (self.frame.size.width/_rollImage.size.width)*_rollImage.size.height);
         
@@ -80,9 +77,9 @@ typedef enum {
         [self.rollTimer fire];
         
         
-    }else if(_rollImage !=nil && _rollImage.size.width/_rollImage.size.height>self.frame.size.width/self.frame.size.height){
+    }else if(_rollImage !=nil && _rollImage.size.width/_rollImage.size.height>self.frame.size.width/self.frame.size.height && ABS((self.frame.size.height/_rollImage.size.height) *_rollImage.size.width) - self.frame.size.width > self.frame.size.width/4 ){
         
-        //本地图片的宽高比(500*568)>视图的宽高比(320*568)，进行左右滚动
+        //本地图片的宽高比(500*568)>视图的宽高比(320*568) 并且缩放后宽度还大于WSRollView宽的1/4时，进行左右滚动
         
         _rollImageView.frame  = CGRectMake(0, 0,(self.frame.size.height/_rollImage.size.height) *_rollImage.size.width, self.frame.size.height);
         
