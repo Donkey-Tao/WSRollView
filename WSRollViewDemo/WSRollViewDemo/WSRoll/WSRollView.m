@@ -56,7 +56,7 @@ typedef enum {
         [self downLoaderImageWithUrlString:_rollImageURL];
         
     }
-
+    
     
 }
 
@@ -66,7 +66,7 @@ typedef enum {
     if (_rollImage !=nil && _rollImage.size.width/_rollImage.size.height<self.frame.size.width/self.frame.size.height) {
         //本地图片的宽高比(100*568)<视图的宽高比(320*568)，进行上下滚动
         
-        _rollImageView.frame = CGRectMake(0, 0,self.frame.size.width, _rollImage.size.width/_rollImage.size.height *self.frame.size.width);
+        _rollImageView.frame = CGRectMake(0, 0,self.frame.size.width, (self.frame.size.width/_rollImage.size.width)*_rollImage.size.height);
         
         _rollImageView.image = _rollImage;
         self.clipsToBounds = YES;//截掉超过父视图大小的_rollImageView
@@ -75,20 +75,20 @@ typedef enum {
         self.direction = RollDirectionUpDown;//上下
         self.rollTimer =[NSTimer scheduledTimerWithTimeInterval:self.timeInterval target:self selector:@selector(rollImageAction) userInfo:nil repeats:YES];
         [self.rollTimer fire];
-
+        
         
     }else if(_rollImage !=nil && _rollImage.size.width/_rollImage.size.height>self.frame.size.width/self.frame.size.height){
         
         //本地图片的宽高比(500*568)>视图的宽高比(320*568)，进行左右滚动
-
-        _rollImageView.frame  = CGRectMake(0, 0,_rollImage.size.width/_rollImage.size.height * self.frame.size.height, self.frame.size.height);
+        
+        _rollImageView.frame  = CGRectMake(0, 0,(self.frame.size.height/_rollImage.size.height) *_rollImage.size.width, self.frame.size.height);
         
         _rollImageView.image = _rollImage;
         self.clipsToBounds = YES;//截掉超过父视图大小的_rollImageView
         [self addSubview:_rollImageView];
         
         self.direction = RollDirectionLeftRight;//左右
-
+        
         self.rollTimer =[NSTimer scheduledTimerWithTimeInterval:self.timeInterval target:self selector:@selector(rollImageAction) userInfo:nil repeats:YES];
         
         
@@ -111,10 +111,10 @@ bool isReverse = NO;//是否反向翻滚
     switch (self.direction) {
         case RollDirectionUpDown:
         {
-            if (rollY-self.rollSpace >(self.frame.size.height-self.frame.size.width* _rollImage.size.height/_rollImage.size.width) &&!isReverse) {
+            if (rollY-self.rollSpace >(self.frame.size.height-self.frame.size.width/_rollImage.size.width* _rollImage.size.height) &&!isReverse) {
                 
                 rollY = rollY-self.rollSpace;
-                _rollImageView.frame = CGRectMake(0, rollY,self.frame.size.width, self.frame.size.width*_rollImage.size.height/_rollImage.size.width);
+                _rollImageView.frame = CGRectMake(0, rollY,self.frame.size.width, self.frame.size.width/_rollImage.size.width* _rollImage.size.height);
                 
             }else{
                 
@@ -124,21 +124,21 @@ bool isReverse = NO;//是否反向翻滚
             if (rollY+self.rollSpace < 0 &&isReverse) {
                 
                 rollY = rollY +self.rollSpace;
-                _rollImageView.frame = CGRectMake(0, rollY, self.frame.size.width, self.frame.size.width* _rollImage.size.height/_rollImage.size.width);
+                _rollImageView.frame = CGRectMake(0, rollY, self.frame.size.width, self.frame.size.width/_rollImage.size.width* _rollImage.size.height);
                 
             }else{
                 isReverse = NO;
             }
-
+            
         }
             break;
-        
+            
         case RollDirectionLeftRight:
         {
-            if (rollX-self.rollSpace >(self.frame.size.width-self.frame.size.height* _rollImage.size.width/_rollImage.size.height) &&!isReverse) {
+            if (rollX-self.rollSpace >(self.frame.size.width-self.frame.size.height/_rollImage.size.height* _rollImage.size.width) &&!isReverse) {
                 
                 rollX = rollX-self.rollSpace;
-                _rollImageView.frame = CGRectMake(rollX, 0,self.frame.size.height* _rollImage.size.width/_rollImage.size.height, self.frame.size.height);
+                _rollImageView.frame = CGRectMake(rollX, 0,self.frame.size.height/_rollImage.size.height* _rollImage.size.width, self.frame.size.height);
                 
             }else{
                 
@@ -149,12 +149,12 @@ bool isReverse = NO;//是否反向翻滚
                 
                 rollX = rollX +self.rollSpace;
                 
-                _rollImageView.frame = CGRectMake(rollX, 0,self.frame.size.height* _rollImage.size.width/_rollImage.size.height, self.frame.size.height);
+                _rollImageView.frame = CGRectMake(rollX, 0,self.frame.size.height/_rollImage.size.height* _rollImage.size.width, self.frame.size.height);
                 
             }else{
                 isReverse = NO;
             }
-
+            
         }
             break;
             
@@ -173,7 +173,7 @@ bool isReverse = NO;//是否反向翻滚
         
         weakSelf.rollImage = image;
         [weakSelf addRollImageAndTimer];
-
+        
     }];
 }
 
