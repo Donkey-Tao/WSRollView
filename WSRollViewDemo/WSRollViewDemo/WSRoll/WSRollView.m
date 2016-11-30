@@ -62,6 +62,9 @@ typedef enum {
 
 -(void)addRollImageAndTimer{
     
+    NSLog(@"%f***%f",_rollImage.size.width,_rollImage.size.height);
+    NSLog(@"%f***%f",self.frame.size.width,self.frame.size.height);
+    
     //图片
     if (_rollImage !=nil && _rollImage.size.width/_rollImage.size.height<self.frame.size.width/self.frame.size.height) {
         //本地图片的宽高比(100*568)<视图的宽高比(320*568)，进行上下滚动
@@ -95,8 +98,11 @@ typedef enum {
         [self.rollTimer fire];
     }
     else {
-        
-        NSLog(@"Error:没有图片或者图片宽高比和视图相同");
+        _rollImageView.frame  = CGRectMake(0, 0,self.frame.size.width, self.frame.size.height);
+        _rollImageView.image = _rollImage;
+        self.clipsToBounds = YES;//截掉超过父视图大小的_rollImageView
+        [self addSubview:_rollImageView];
+        NSLog(@"Error:没有图片或者图片宽高比和视图相同,直接显示不滚动");
     }
     
     

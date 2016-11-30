@@ -434,6 +434,7 @@
 				88B842591DEE86D60016A79E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
